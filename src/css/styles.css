@@ -1,0 +1,143 @@
+@import url('./reset.css');
+@import url('./base.css');
+
+.loader {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  border: 2px solid #ff3d00;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+  margin: 0 auto;
+}
+
+.loader::after {
+  content: '';
+  box-sizing: border-box;
+  position: absolute;
+  left: 4px;
+  top: 4px;
+  border: 2px solid #fff;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin: 0 auto;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+.form {
+  margin-top: 36px;
+  margin: 36px auto 32px;
+}
+
+.input {
+  font-family: inherit;
+  border: 1px solid #808080;
+  border-radius: 4px;
+  width: 272px;
+  height: 40px;
+  font-size: 16px;
+  letter-spacing: 0.04em;
+  color: #808080;
+  outline: transparent;
+  padding: 8px 16px;
+  margin-right: 8px;
+  float: left;
+}
+
+.input:hover {
+  border: 1px solid #000;
+}
+
+.input:active,
+.input:focus {
+  border: 1px solid #4e75ff;
+  color: #2e2f42;
+}
+.button {
+  border-radius: 8px;
+  padding: 8px 16px;
+  width: 91px;
+  height: 40px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 150%;
+  letter-spacing: 0.04em;
+  color: #fff;
+  background-color: #4e75ff;
+  border-color: transparent;
+  outline: transparent;
+}
+
+.button:hover {
+  background-color: #6c8cff;
+}
+
+.gallery {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  max-width: 1128px;
+  margin: 0 auto;
+}
+
+.gallery-item {
+  border: 1px solid #808080;
+  width: calc((100% - 48px) / 3);
+  max-width: 360px;
+  height: 200px;
+}
+
+.gallery-link {
+  max-width: 360px;
+  height: 152px;
+}
+
+.gallery-image {
+  width: 360px;
+  height: 152px;
+}
+
+.info-wrapper {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.attr-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 0px;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: #2e2f42;
+}
+
+.text {
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: #2e2f42;
+}
