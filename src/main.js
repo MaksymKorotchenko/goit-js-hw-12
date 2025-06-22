@@ -12,7 +12,8 @@ import 'izitoast/dist/css/iziToast.min.css';
 
 const form = document.querySelector('.form'),
   loadMore = document.querySelector('.load-button'),
-  input = document.querySelector('.input');
+  input = document.querySelector('.input'),
+  button = document.querySelector('.button');
 
 let currentPage = 1;
 let userQuery = '';
@@ -25,6 +26,8 @@ form.addEventListener('submit', async event => {
   hits = 0;
   userQuery = input.value.trim();
   event.preventDefault();
+  button.disabled = true;
+
   if (userQuery === '') {
     iziToast.error({
       message: 'Please, fill in the field',
@@ -34,9 +37,10 @@ form.addEventListener('submit', async event => {
     });
     return;
   }
-  clearGallery();
 
+  clearGallery();
   showLoader();
+
   try {
     const data = await getImagesByQuery(userQuery, currentPage);
 
@@ -50,12 +54,15 @@ form.addEventListener('submit', async event => {
       });
       return;
     }
+
+    button.disabled = false;
     hits += data.hits.length;
     createGallery(data.hits);
 
     if (hits >= data.totalHits) {
       hideLoadMoreButton();
     }
+
     showLoadMoreButton();
   } catch (error) {
     iziToast.error({
@@ -69,11 +76,25 @@ form.addEventListener('submit', async event => {
 loadMore.addEventListener('click', handleClick);
 
 async function handleClick() {
+  showLoader();
   currentPage += 1;
+  loadMore.disabled = true;
+
   try {
     const data = await getImagesByQuery(userQuery, currentPage);
+
     createGallery(data.hits);
+
+    const item = document.querySelector('.gallery-item');
+    const itemSize = item.getBoundingClientRect();
+
+    window.scrollBy({
+      top: itemSize.height * 2,
+      behavior: 'smooth',
+    });
+
     hits += data.hits.length;
+    loadMore.disabled = false;
 
     if (hits >= data.totalHits) {
       hideLoadMoreButton();
