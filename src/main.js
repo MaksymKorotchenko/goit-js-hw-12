@@ -59,11 +59,11 @@ form.addEventListener('submit', async event => {
     hits += data.hits.length;
     createGallery(data.hits);
 
-    if (hits >= data.totalHits) {
+    if (hits < data.totalHits) {
+      showLoadMoreButton();
+    } else {
       hideLoadMoreButton();
     }
-
-    showLoadMoreButton();
   } catch (error) {
     iziToast.error({
       message: `${error}`,
