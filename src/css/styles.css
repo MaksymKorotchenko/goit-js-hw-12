@@ -10,7 +10,7 @@
   border: 2px solid #ff3d00;
   box-sizing: border-box;
   animation: rotation 1s linear infinite;
-  margin: 0 auto;
+  margin: 32px auto;
 }
 
 .loader::after {
@@ -40,8 +40,7 @@
 }
 
 .form {
-  margin-top: 36px;
-  margin: 36px auto 32px;
+  margin: 36px auto 32px auto;
 }
 
 .input {

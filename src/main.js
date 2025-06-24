@@ -16,17 +16,19 @@ const form = document.querySelector('.form'),
   button = document.querySelector('.button');
 
 let currentPage = 1;
+let totalPages = 0;
 let userQuery = '';
 let hits = 0;
+
+function getTotalPages(data) {
+  return Math.ceil(data.totalHits / data.hits.length);
+}
 
 hideLoadMoreButton();
 
 form.addEventListener('submit', async event => {
-  currentPage = 1;
-  hits = 0;
-  userQuery = input.value.trim();
   event.preventDefault();
-  button.disabled = true;
+  userQuery = input.value.trim();
 
   if (userQuery === '') {
     iziToast.error({
@@ -38,11 +40,15 @@ form.addEventListener('submit', async event => {
     return;
   }
 
+  currentPage = 1;
+  button.disabled = true;
+  hideLoadMoreButton();
   clearGallery();
   showLoader();
 
   try {
     const data = await getImagesByQuery(userQuery, currentPage);
+    totalPages = getTotalPages(data);
 
     if (data.hits.length === 0) {
       iziToast.error({
@@ -55,11 +61,9 @@ form.addEventListener('submit', async event => {
       return;
     }
 
-    button.disabled = false;
-    hits += data.hits.length;
     createGallery(data.hits);
 
-    if (hits < data.totalHits) {
+    if (currentPage < totalPages) {
       showLoadMoreButton();
     } else {
       hideLoadMoreButton();
@@ -70,15 +74,17 @@ form.addEventListener('submit', async event => {
     });
   } finally {
     hideLoader();
+    button.disabled = false;
   }
 });
 
 loadMore.addEventListener('click', handleClick);
 
 async function handleClick() {
-  showLoader();
   currentPage += 1;
   loadMore.disabled = true;
+  hideLoadMoreButton();
+  showLoader();
 
   try {
     const data = await getImagesByQuery(userQuery, currentPage);
@@ -93,10 +99,11 @@ async function handleClick() {
       behavior: 'smooth',
     });
 
-    hits += data.hits.length;
     loadMore.disabled = false;
 
-    if (hits >= data.totalHits) {
+    if (currentPage < totalPages) {
+      showLoadMoreButton();
+    } else {
       hideLoadMoreButton();
       iziToast.info({
         message: "We're sorry, but you've reached the end of search results.",
